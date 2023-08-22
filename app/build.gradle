@@ -1,0 +1,151 @@
+buildscript {
+    dependencies {
+        classpath 'org.apache.commons:commons-lang3:3.12.0'
+    }
+}
+
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'com.google.devtools.ksp'
+    id 'kotlin-android'
+    id 'kotlin-parcelize'
+}
+
+android {
+    namespace 'com.example.apptemplate'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.example.apptemplate"
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(19)
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_19
+        targetCompatibility JavaVersion.VERSION_19
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_19.toString()
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    packagingOptions {
+        jniLibs {
+            pickFirsts += ['lib/x86/libc++_shared.so', 'lib/x86_64/libc++_shared.so', 'lib/armeabi-v7a/libc++_shared.so', 'lib/arm64-v8a/libc++_shared.so', 'lib/x86/libjsc.so', 'lib/armeabi-v7a/libjsc.so']
+        }
+        resources {
+            excludes += ['META-INF/DEPENDENCIES.txt', 'META-INF/LICENSE.txt', 'META-INF/NOTICE.txt', 'META-INF/NOTICE', 'META-INF/LICENSE', 'META-INF/DEPENDENCIES', 'META-INF/notice.txt', 'META-INF/license.txt', 'META-INF/dependencies.txt', 'META-INF/LGPL2.1']
+        }
+    }
+}
+
+dependencies {
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'org.apache.commons:commons-collections4:4.4'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+
+    implementation 'androidx.core:core-ktx:1.10.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.activity:activity-ktx:1.7.2'
+    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.7.0'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.7.0'
+    implementation 'com.android.databinding:viewbinding:8.1.0'
+
+    // Recyclerview
+    implementation 'androidx.recyclerview:recyclerview:1.3.1'
+    implementation 'androidx.test.ext:junit-ktx:1.1.5'
+
+    // Retrofit, RxJava and OKHttp
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
+    implementation 'com.squareup.moshi:moshi:1.14.0'
+    implementation 'com.squareup.moshi:moshi-kotlin:1.14.0'
+    ksp 'com.squareup.moshi:moshi-kotlin-codegen:1.10.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
+
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.19'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+
+    // Coroutine
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
+
+    // Lifecycle
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    ksp 'androidx.lifecycle:lifecycle-common-java8:2.6.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
+
+    // Room
+//    def room = "2.5.2"
+//    implementation 'androidx.room:room-runtime:2.5.2'
+//    implementation 'androidx.room:room-ktx:2.5.2'
+//    ksp 'androidx.room:room-compiler:2.5.2'
+
+    // Kotlin and Coil Library to load SVG from URL
+    def coil = "2.2.0"
+    implementation "io.coil-kt:coil:$coil"
+    implementation "io.coil-kt:coil-svg:$coil"
+
+    // Glide image loading library
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
+    ksp 'com.github.bumptech.glide:ksp:4.14.2'
+
+    // logging
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
+
+tasks.register('finalizeBundleRelease', Copy) {
+    def path = "${buildDir}/outputs/bundle/release/"
+    def pathDest = "${buildDir}/outputs/apk/"
+    from(path)
+    include "app.aab"
+    destinationDir file(pathDest)
+    rename "app.aab", appName + ".aab"
+}
+
+// this adds the above task
+tasks.configureEach { task ->
+    if (task.name == "bundleRelease") {
+        task.finalizedBy finalizeBundleRelease
+    }
+}
