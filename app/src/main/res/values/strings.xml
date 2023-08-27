@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AppTemplate</string>
+    <string name="input_instrument_type">Input instrument type....</string>
 </resources>
