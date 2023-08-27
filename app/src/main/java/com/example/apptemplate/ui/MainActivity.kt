@@ -78,15 +78,12 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("NotifyDataSetChanged")
     private fun initRecyclerReview(binding: ActivityMainBinding, list: List<Instrument>) {
         binding.instrumentList.apply {
+            instrumentRecyclerViewAdapter = InstrumentRecyclerViewAdapter(list)
             if (adapter == null){
-                instrumentRecyclerViewAdapter = InstrumentRecyclerViewAdapter(list)
                 addItemDecoration(DividerItemDecoration(this@MainActivity,
                     DividerItemDecoration.VERTICAL))
-                adapter = instrumentRecyclerViewAdapter
-            } else {
-                instrumentRecyclerViewAdapter = InstrumentRecyclerViewAdapter(list)
-                adapter = instrumentRecyclerViewAdapter
             }
+            adapter = instrumentRecyclerViewAdapter
         }
     }
 
