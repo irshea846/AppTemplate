@@ -28,7 +28,6 @@ class InstrumentRepository(
                 throw Exception(value)
             }
             emit(DataState.Success(instrumentList))
-
         } catch (e: Exception) {
             emit(DataState.Error(e))
         }
@@ -60,4 +59,33 @@ class InstrumentRepository(
             })
         }
     }
+
+
+//Asynchronous Operations:  Handling Callbacks — High-order functions aid in managing asynchronous
+//                          operations, encapsulating callback logic for better readability.
+
+//    private fun fetchInstrumentFromServer(onDataReceived: () -> MutableLiveData<DataState<List<Instrument>>>) {
+//        val call: Call<List<Instrument>> = apiService.getInstruments()
+//        call.enqueue(object : Callback<List<Instrument>?> {
+//            override fun onResponse(
+//                call: Call<List<Instrument>?>,
+//                response: Response<List<Instrument>?>
+//            ) {
+//                if (response.isSuccessful) {
+//                    val remoteInstrumentList: MutableList<Instrument> = mutableListOf()
+//                    response.body()!!.forEach {
+//                        remoteInstrumentList.add(it)
+//                    }
+//                    onDataReceived(remoteInstrumentList)
+//                } else {
+//                    onDataReceived(response.errorBody().toString())
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<List<Instrument>?>, t: Throwable) {
+//                val failedMsg = t.message
+//                onDataReceived(failedMsg)
+//            }
+//        })
+//    }
 }
