@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
                             instrument?.contains(str)
                         } ?: false
                     }
-                    initRecyclerReview(binding, filteredInstrumentList)
+                    instrumentRecyclerViewAdapter.resetInstrumentList(filteredInstrumentList)
                 }
 
                 override fun afterTextChanged(s: Editable?) {
@@ -75,14 +75,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private fun initRecyclerReview(binding: ActivityMainBinding, list: List<Instrument>) {
         binding.instrumentList.apply {
             instrumentRecyclerViewAdapter = InstrumentRecyclerViewAdapter(list)
-            if (adapter == null){
-                addItemDecoration(DividerItemDecoration(this@MainActivity,
-                    DividerItemDecoration.VERTICAL))
-            }
+            addItemDecoration(DividerItemDecoration(this@MainActivity,
+                DividerItemDecoration.VERTICAL))
             adapter = instrumentRecyclerViewAdapter
         }
     }

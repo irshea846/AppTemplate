@@ -1,5 +1,6 @@
 package com.example.apptemplate.ui
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,7 +11,7 @@ class InstrumentRecyclerViewAdapter(
     instrumentList: List<Instrument>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val items: List<Instrument> = instrumentList
+    private var items: List<Instrument> = instrumentList
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding: ItemBinding = ItemBinding.inflate(LayoutInflater.from(parent.context), parent,
@@ -27,6 +28,12 @@ class InstrumentRecyclerViewAdapter(
         when (holder) {
             is InstrumentViewHolder -> holder.bind(item)
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun resetInstrumentList(instrumentItems: List<Instrument>) {
+        items = instrumentItems
+        notifyDataSetChanged()
     }
 
     class InstrumentViewHolder(
