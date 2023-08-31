@@ -1,6 +1,5 @@
 package com.example.apptemplate.ui
 
-import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -9,7 +8,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.RecyclerView
 import com.example.apptemplate.databinding.ActivityMainBinding
 import com.example.apptemplate.datastore.remote.Instrument
 import com.example.apptemplate.util.DataState
