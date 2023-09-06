@@ -10,7 +10,7 @@ import androidx.activity.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.apptemplate.databinding.ActivityMainBinding
 import com.example.apptemplate.datastore.remote.Instrument
-import com.example.apptemplate.util.DataState
+import com.example.apptemplate.util.DataState.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -57,16 +57,16 @@ class MainActivity : AppCompatActivity() {
     private fun subscribeObserver() {
         viewModel.uiState.observe(this) {
             when (it) {
-                is DataState.Success -> {
+                is Success -> {
                     binding.progressBar.visibility = View.GONE
                     instrumentList = it.data.toMutableList()
                     initRecyclerReview(binding, instrumentList)
                 }
-                is DataState.Error -> {
+                is Error -> {
                     binding.progressBar.visibility = View.GONE
                     Toast.makeText(this, it.exception.message, Toast.LENGTH_LONG).show()
                 }
-                is DataState.Loading -> {
+                is Loading -> {
                     binding.progressBar.visibility = View.VISIBLE
                 }
             }
